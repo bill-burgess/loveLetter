@@ -1,5 +1,8 @@
 var {newDeck} = require('./db.js')
 
+var deck = newDeck
+var players = setPlayers(['Bill', 'Dave', 'Steve'])
+
 function newPlayer (playerName, index) {
   return {
     name: playerName,
@@ -10,25 +13,26 @@ function newPlayer (playerName, index) {
 
 function setPlayers (playerNames) {
   return playerNames.map((playerName, i) => {
-    return players.push(newPlayer(playerName, i))
+    return newPlayer(playerName, i)
   })
 }
 
-var deck = newDeck
 
-function drawCard(deck, playerName){
-
+function drawCard (deck, player) {
   var cardSlot = Math.floor(Math.random() * deck.length)
-  draw = deck[cardSlot]
+  var draw = deck[cardSlot]
   deck.splice(cardSlot, 1)
   player.hand.push(draw)
 }
 
-// function deal(deck, players){
-//   var discard = []
-//
-// }
+function deal(deck, players){
+  deck.splice(Math.floor(Math.random() * deck.length), 1)
+  players.map(player => {
+    drawCard(deck, player)
+  })
+}
 
-var players = setPlayers(['Bill', 'Dave', 'Steve'])
+
+deal(deck, players)
 console.log(players)
 console.log(deck)
