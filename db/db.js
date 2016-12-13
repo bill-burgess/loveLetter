@@ -7,35 +7,35 @@ var king = {name: 'king', effect: kingEffect}
 var countess = {name: 'countess', effect: countessEffect}
 var princess = {name: 'princess', effect: princessEffect}
 
-function gaurdEffect(){
+function gaurdEffect () {
   console.log('Gaurd played')
 }
 
-function priestEffect(){
+function priestEffect () {
   console.log('Priest played')
 }
 
-function baronEffect(){
+function baronEffect () {
   console.log('Baron played')
 }
 
-function handmaidEffect(){
+function handmaidEffect () {
   console.log('Handmaid played')
 }
 
-function princeEffect(){
+function princeEffect () {
   console.log('Prince played')
 }
 
-function kingEffect(){
+function kingEffect () {
   console.log('King played')
 }
 
-function countessEffect(){
+function countessEffect () {
   console.log('Countess played')
 }
 
-function princessEffect(){
+function princessEffect () {
   console.log('Princess played')
 }
 

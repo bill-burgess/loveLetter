@@ -40,12 +40,13 @@ function newGame (playerNames) {
   return game
 }
 
-function startTurn(game){
+function startTurn (game) {
   drawCard(game.deck, game.players[game.playerTurn])
 }
 
-function playCard(game, cardPosInHand){
-  game.players[game.playerTurn].hand[cardPosInHand].effect()
+function playCard (game, cardPosInHand) {
+  var effect = game.players[game.playerTurn].hand[cardPosInHand].effect
+  effect()
 }
 
 var game = newGame(testNames)
