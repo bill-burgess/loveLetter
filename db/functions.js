@@ -46,7 +46,7 @@ function startTurn (game) {
 
 function playCard (game, cardPosInHand) {
   var effect = game.players[game.playerTurn].hand[cardPosInHand].effect
-  effect()
+  effect('test', 'test2')
 }
 
 var game = newGame(testNames)
