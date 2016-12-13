@@ -7,6 +7,6 @@ var king = {name: 'king'}
 var countess = {name: 'countess'}
 var princess = {name: 'princess'}
 
-var deck = [gaurd, gaurd, gaurd, gaurd, gaurd, priest, priest, baron, baron, handmaid, handmaid, prince, prince, king, countess, princess]
+var newDeck = [gaurd, gaurd, gaurd, gaurd, gaurd, priest, priest, baron, baron, handmaid, handmaid, prince, prince, king, countess, princess]
 
-module.exports = deck
+module.exports = {newDeck}
