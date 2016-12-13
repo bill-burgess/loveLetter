@@ -1,4 +1,6 @@
-var {newDeck} = require('./db.js')
+var {newDeck, gaurdEffect, priestEffect, baronEffect, handmaidEffect, princeEffect, kingEffect, countessEffect, princessEffect} = require('./db.js')
+
+var testNames = ['Bill', 'Steve', 'Dave']
 
 function newPlayer (playerName, index) {
   return {
@@ -37,3 +39,15 @@ function newGame (playerNames) {
   deal(game.deck, game.players)
   return game
 }
+
+function startTurn(game){
+  drawCard(game.deck, game.players[game.playerTurn])
+}
+
+function playCard(game, cardPosInHand){
+  game.players[game.playerTurn].hand[cardPosInHand].effect()
+}
+
+var game = newGame(testNames)
+startTurn(game)
+playCard(game, 1)
