@@ -1,12 +1,10 @@
-var {newDeck, gaurdEffect, priestEffect, baronEffect, handmaidEffect, princeEffect, kingEffect, countessEffect, princessEffect} = require('./db.js')
+var {newDeck} = require('./db.js')
+var drawCard = require('./drawCard')
 
-var testNames = ['Bill', 'Joyce', 'Dave']
-
-function newPlayer (playerName, index) {
+function newPlayer (playerName) {
   return {
     name: playerName,
     hand: [],
-    playerPosition: index,
     immune: false
   }
 }
@@ -15,13 +13,6 @@ function setPlayers (playerNames) {
   return playerNames.map((playerName, i) => {
     return newPlayer(playerName, i)
   })
-}
-
-function drawCard (deck, player) {
-  var cardSlot = Math.floor(Math.random() * deck.length)
-  var draw = deck[cardSlot]
-  deck.splice(cardSlot, 1)
-  player.hand.push(draw)
 }
 
 function deal (deck, players) {
@@ -72,7 +63,6 @@ function highestCard (players) {
   })
 }
 
-var game = newGame(testNames)
-startTurn(game)
-playCard(game, 1, 1, 'priest')
-console.log(game)
+
+
+module.exports = {setPlayers, newGame, startTurn, playCard, checkWin}
