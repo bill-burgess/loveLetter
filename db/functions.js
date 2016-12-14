@@ -1,12 +1,13 @@
 var {newDeck, gaurdEffect, priestEffect, baronEffect, handmaidEffect, princeEffect, kingEffect, countessEffect, princessEffect} = require('./db.js')
 
-var testNames = ['Bill', 'Steve', 'Dave']
+var testNames = ['Bill', 'Joyce', 'Dave']
 
 function newPlayer (playerName, index) {
   return {
     name: playerName,
     hand: [],
-    playerPosition: index
+    playerPosition: index,
+    immune: false
   }
 }
 
@@ -44,11 +45,34 @@ function startTurn (game) {
   drawCard(game.deck, game.players[game.playerTurn])
 }
 
-function playCard (game, cardPosInHand) {
+function playCard (game, cardPosInHand, targetedPlayer, guess) {
   var effect = game.players[game.playerTurn].hand[cardPosInHand].effect
-  effect('test', 'test2')
+  game.players[game.playerTurn].hand.splice(cardPosInHand, 1)
+  effect(game, targetedPlayer, guess)
+}
+
+function checkWin (game) {
+  var winner = null
+  if (game.players.length === 1) {
+    winner = game.players[0]
+  }
+  if (game.deck.length === 0) {
+    winner = highestCard(game.players)
+  }
+  return winner
+}
+
+function highestCard (players) {
+  var handValues = players.map(player => {
+    return player.hand[0].rank
+  })
+  var highestCard = Math.max.apply(null, handValues)
+  return players.filter(player => {
+    return player.hand[0].rank === highestCard
+  })
 }
 
 var game = newGame(testNames)
 startTurn(game)
-playCard(game, 1)
+playCard(game, 1, 1, 'priest')
+console.log(game)
