@@ -1,34 +1,77 @@
-var {drawCard, setPlayers, newGame, startTurn, playCard, checkWin} = require('./db/functions')
-var express = require('express')
-var expresshbs = require('express-handlebars')
-var bodyParser = require('body-parser')
-var path = require('path')
+const express = require('express')
+const path = require('path')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const api = require('./api')
 
-var app = express()
+module.exports = function (db) {
+  const app = express()
 
-app.engine('handlebars', expresshbs({defaultLayout: 'main'}))
-app.set('view engine', 'handlebars')
+  app.use(logger('dev'))
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: false }))
+  app.use(cookieParser())
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(express.static(path.join(__dirname, 'public')))
+  if (app.get('env') === 'development') {
+    // bundle client/index.js
+    // and serve it at GET /bundle.js
+    const webpackDevMiddleware = require('webpack-dev-middleware')
+    const config = require('./webpack.config')
+    const webpack = require('webpack')
+    const compiler = webpack(config)
+    const livereload = require('livereload')
+    const lrserver = livereload.createServer()
 
-var game = null
+    lrserver.watch([
+      __dirname + '/public',
+      __dirname + '/client'
+    ])
 
-app.get('/', (req, res) => {
-  res.render('index')
-})
+    app.use(require('inject-lr-script')())
 
-app.post('/game', (req, res) => {
-  game = newGame(['bot1', 'bot2', 'bot3', req.body.name])
-  res.redirect('/game')
-})
+    app.use(webpackDevMiddleware(compiler, {
+      noInfo: true,
+      publicPath: config.output.publicPath
+    }))
+  }
 
-app.get('/game', (req, res) => {
-  console.log(game)
-  res.render('game', game.players[3])
-})
+  // static files
+  app.use('/', express.static(path.join(__dirname, 'public')))
 
-var PORT = 3000
+  // routes
+  app.use('/api/v1/game', api.game(db))
 
-app.listen(PORT, console.log('server started on port: ', PORT))
+  // catch 404 and forward to error handler
+  app.use(function (req, res, next) {
+    const err = new Error('Not Found')
+    err.status = 404
+    next(err)
+  })
+
+  // error handlers
+
+  // development error handler
+  // will print stacktrace
+  if (app.get('env') === 'development') {
+    app.use(function (err, req, res, next) {
+      res.status(err.status || 500)
+      res.json({
+        message: err.message,
+        error: err
+      })
+    })
+  }
+
+  // production error handler
+  // no stacktraces leaked to user
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500)
+    res.json({
+      message: err.message,
+      error: {}
+    })
+  })
+
+  return app
+}

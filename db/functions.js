@@ -63,6 +63,4 @@ function highestCard (players) {
   })
 }
 
-
-
 module.exports = {setPlayers, newGame, startTurn, playCard, checkWin}

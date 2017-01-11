@@ -1,6 +1,6 @@
 var drawCard = require('./drawCard')
 
-function getActivePlayer(game){
+function getActivePlayer (game) {
   return game.players[game.playerTurn]
 }
 
@@ -55,7 +55,7 @@ function princeEffect (game, targetedPlayerPos) {
   var targetedPlayer = game.players[targetedPlayerPos]
 
   if (!targetedPlayer.immune) {
-    if(targetedPlayer.hand[0].name === 'princess'){
+    if (targetedPlayer.hand[0].name === 'princess') {
       game.players.splice(targetedPlayerPos, 1)
     }
     game.players[targetedPlayerPos].hand.splice(0, 1)
@@ -67,7 +67,7 @@ function kingEffect (game, targetedPlayerPos) {
   console.log('King played')
   // Targeted player cannnot be self
   var targetedPlayer = game.players[targetedPlayerPos]
-  if (!targetedPlayer.immune){
+  if (!targetedPlayer.immune) {
     game.players[game.playerTurn].hand.push(targetedPlayer.hand[0])
     targetedPlayer.hand.push(game.players[game.playerTurn].hand[0])
     game.players[targetedPlayerPos].hand.splice(1, 1)
