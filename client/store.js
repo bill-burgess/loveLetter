@@ -4,10 +4,16 @@ require('superagent-as-promised')(request)
 module.exports = function (model) {
   const listeners = []
 
+  // model
+  // { log: [
+  //  'gameaction'
+// ]}
+
   return {
     subscribe: function (listener) {
       listeners.push(listener)
     },
+
   //
   //   update: function (key, update) {
   //     console.log('model before update:', model)

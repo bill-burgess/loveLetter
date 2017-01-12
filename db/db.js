@@ -11,4 +11,4 @@ var princess = {name: 'princess', effect: princessEffect, rank: 8}
 
 var newDeck = [guard, guard, guard, guard, guard, priest, priest, baron, baron, handmaid, handmaid, prince, prince, king, countess, princess]
 
-module.exports = {newDeck}
+module.exports = newDeck
