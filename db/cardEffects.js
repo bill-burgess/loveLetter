@@ -1,4 +1,4 @@
-var drawCard = require('./drawCard')
+const drawCard = require('./drawCard')
 
 function getActivePlayer (game) {
   return game.players[game.playerTurn]
@@ -7,7 +7,7 @@ function getActivePlayer (game) {
 function guardEffect (game, targetedPlayerPos, guess) {
   console.log('Guard played')
   // Targeted player cannot be self and guess cannot be guard
-  var targetedPlayer = game.players[targetedPlayerPos]
+  const targetedPlayer = game.players[targetedPlayerPos]
 
   if (targetedPlayer.immune === false) {
     if (targetedPlayer.hand[0].name === guess) {
@@ -26,18 +26,18 @@ function priestEffect (game, targetedPlayer) {
 
 function baronEffect (game, targetedPlayerPos) {
   // Targeted player cannot be self
-  var activePlayer = getActivePlayer(game)
-  var targetedPlayer = game.players[targetedPlayerPos]
+  const activePlayer = getActivePlayer(game)
+  const targetedPlayer = game.players[targetedPlayerPos]
 
-  var activeRank = activePlayer.hand[0].rank
-  var targetRank = targetedPlayer.hand[0].rank
+  const activeRank = activePlayer.hand[0].rank
+  const targetRank = targetedPlayer.hand[0].rank
 
   console.log('Baron played')
   if (!targetedPlayer.immune) {
       // Turn player and targeted player show each other their hands
     if (activeRank === targetRank) return
 
-    var playerIdToEliminate = (activeRank > targetRank)
+    const playerIdToEliminate = (activeRank > targetRank)
       ? targetedPlayerPos
       : game.playerTurn
 
@@ -52,26 +52,27 @@ function handmaidEffect (game) {
 
 function princeEffect (game, targetedPlayerPos) {
   console.log('Prince played')
-  var targetedPlayer = game.players[targetedPlayerPos]
+  const targetedPlayer = game.players[targetedPlayerPos]
 
   if (!targetedPlayer.immune) {
     if (targetedPlayer.hand[0].name === 'princess') {
       game.players.splice(targetedPlayerPos, 1)
+    }else{
+      game.players[targetedPlayerPos].hand.splice(0, 1)
+      drawCard(game.deck, game.players[targetedPlayerPos])
     }
-    game.players[targetedPlayerPos].hand.splice(0, 1)
-    drawCard(game.deck, game.players[targetedPlayerPos])
   }
 }
 
 function kingEffect (game, targetedPlayerPos) {
   console.log('King played')
   // Targeted player cannnot be self
-  var targetedPlayer = game.players[targetedPlayerPos]
+  const targetedPlayer = game.players[targetedPlayerPos]
   if (!targetedPlayer.immune) {
     game.players[game.playerTurn].hand.push(targetedPlayer.hand[0])
     targetedPlayer.hand.push(game.players[game.playerTurn].hand[0])
-    game.players[targetedPlayerPos].hand.splice(1, 1)
-    game.players[game.playerTurn].hand.splice(1, 1)
+    game.players[targetedPlayerPos].hand.splice(0, 1)
+    game.players[game.playerTurn].hand.splice(0, 1)
   }
 }
 

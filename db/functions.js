@@ -1,5 +1,5 @@
-var {newDeck} = require('./db.js')
-var drawCard = require('./drawCard')
+const {newDeck} = require('./db.js')
+const drawCard = require('./drawCard')
 
 function newPlayer (playerName) {
   return {
@@ -23,7 +23,7 @@ function deal (deck, players) {
 }
 
 function newGame (playerNames) {
-  var game = {
+  const game = {
     deck: newDeck,
     players: setPlayers(playerNames),
     playerTurn: Math.floor(Math.random() * playerNames.length)
@@ -37,13 +37,13 @@ function startTurn (game) {
 }
 
 function playCard (game, cardPosInHand, targetedPlayer, guess) {
-  var effect = game.players[game.playerTurn].hand[cardPosInHand].effect
+  const effect = game.players[game.playerTurn].hand[cardPosInHand].effect
   game.players[game.playerTurn].hand.splice(cardPosInHand, 1)
   effect(game, targetedPlayer, guess)
 }
 
 function checkWin (game) {
-  var winner = null
+  let winner = null
   if (game.players.length === 1) {
     winner = game.players[0]
   }
@@ -54,13 +54,14 @@ function checkWin (game) {
 }
 
 function highestCard (players) {
-  var handValues = players.map(player => {
+  const handValues = players.map(player => {
     return player.hand[0].rank
   })
-  var highestCard = Math.max.apply(null, handValues)
-  return players.filter(player => {
+  const highestCard = Math.max.apply(null, handValues)
+  const winner = players.filter(player => {
     return player.hand[0].rank === highestCard
   })
+  return winner[0]
 }
 
 module.exports = {setPlayers, newGame, startTurn, playCard, checkWin}

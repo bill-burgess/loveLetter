@@ -179,6 +179,33 @@ test('princeEffect | should not effect immune player', (t) => {
   t.deepEqual(expectedGame.players, game.players, 'should not take effect if targeted player is immune')
 })
 
+test('princeEffect | should replace the card in the targeted players hand', (t) => {
+  t.plan(3)
+  //Arrange
+  const game = makeGame()
+
+  const expectedGame = {
+    deck: newDeck,
+    players: [
+      {name: 'Tom', hand: [deck[11]], immune: false},
+      {name: 'Dick', hand: [deck[14]], immune: false}
+    ],
+    playerTurn: 0
+  }
+
+  game.players[0].hand.push(deck[11]) // adds prince to hand
+  game.players[1].hand.push(deck[14]) // adds countess to hand
+  game.players[2].hand.push(deck[15]) // adds princess to hand
+
+  //Act
+  princeEffect(game, 1)
+  princeEffect(game, 2)
+  //Assert
+  t.notDeepEqual(game.players[1].hand[0], deck[14], 'card does not remain the same')
+  t.deepEqual(Object.keys(game.players[1].hand[0]), ['name', 'effect', 'rank'], 'new card in targeted players hand should be a card object')
+  t.deepEqual(game.players.length, expectedGame.players.length, 'should eliminate targeted player if they have princess')
+})
+
 test('kingEffect | should not effect immune player', (t) => {
   t.plan(1)
 
@@ -227,8 +254,30 @@ test('kingEffect | should exchange hands with targeted player', (t) => {
 
   //Act
   kingEffect(game, 1)
-  console.log(game.players[0].hand)
-  console.log(game.players[1].hand)
   //Assert
   t.deepEqual(game.players, expectedGame.players, 'should echange hands with targeted player')
+})
+
+test('princessEffect | playing the princess should eliminate you from the game', (t) => {
+  t.plan(1)
+
+  //Arrange
+  const game = makeGame()
+  const expectedGame = {
+    deck: newDeck,
+    players: [
+      {name: 'Dick', hand: [deck[13]], immune: false},
+      {name: 'Harry', hand: [deck[1]], immune: false}
+    ],
+    playerTurn: 0
+  }
+
+  game.players[0].hand.push(deck[15]) // adds princess to hand
+  game.players[1].hand.push(deck[13]) // adds king to hand
+  game.players[2].hand.push(deck[1]) // adds guard to hand
+
+  //Act
+  princessEffect(game)
+  //Assert
+  t.deepEqual(game.players, expectedGame.players, 'should eliminate the turn player')
 })

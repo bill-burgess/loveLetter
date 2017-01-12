@@ -1,6 +1,6 @@
 function drawCard (deck, player) {
-  var cardSlot = Math.floor(Math.random() * deck.length)
-  var draw = deck[cardSlot]
+  const cardSlot = Math.floor(Math.random() * deck.length)
+  const draw = deck[cardSlot]
   deck.splice(cardSlot, 1)
   player.hand.push(draw)
 }
