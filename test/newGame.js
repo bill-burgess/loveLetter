@@ -4,4 +4,13 @@ const {setPlayers, newGame, startTurn, playCard, checkWin} = require('../db/func
 const drawCard = require('../db/drawCard')
 const newDeck = require('../db/db')
 
-test('newGame | creates a game object with selected players and deals cards from a new deck', )
+test('newGame | creates a game object with selected players and deals cards from a new deck', (t) => {
+  t.plan()
+
+  //Arrange
+  const playerNames = ['Tom', 'Dick', 'Harry']
+
+  //Act
+  newGame(playerNames)
+  
+})
